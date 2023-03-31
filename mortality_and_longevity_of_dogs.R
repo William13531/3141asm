@@ -37,7 +37,24 @@ plot_density_by(df, df$neuter, "Neutering Status")
 plot_density_by(na.omit(df), na.omit(df)$pure_cross, "Breed")
 plot_density_by(df, df$insured, "Insurance Status")
 
-lifespan_by <- rbind(summary(filter(df, sex=="Male")$lifespan),
+dim(df)
+df %>% count(sex)
+df %>% count(neuter)
+df %>% count(pure_cross)
+df %>% count(insured)
+
+t.test(df$lifespan, conf.level=0.95)
+t.test(filter(df, sex=="Male")$lifespan, conf.level=0.95)
+t.test(filter(df, sex=="Female")$lifespan, conf.level=0.95)
+t.test(filter(df, neuter=="Neutered")$lifespan, conf.level=0.95)
+t.test(filter(df, neuter=="Entire")$lifespan, conf.level=0.95)
+t.test(filter(df, pure_cross=="Crossbred")$lifespan, conf.level=0.95)
+t.test(filter(df, pure_cross=="Purebred")$lifespan, conf.level=0.95)
+t.test(filter(df, insured=="Uninsured")$lifespan, conf.level=0.95)
+t.test(filter(df, insured=="Insured")$lifespan, conf.level=0.95)
+  
+lifespan_by <- rbind(summary(df$lifespan),
+                     summary(filter(df, sex=="Male")$lifespan),
                      summary(filter(df, sex=="Female")$lifespan),
                      summary(filter(df, neuter=="Neutered")$lifespan),
                      summary(filter(df, neuter=="Entire")$lifespan),
@@ -45,7 +62,7 @@ lifespan_by <- rbind(summary(filter(df, sex=="Male")$lifespan),
                      summary(filter(df, pure_cross=="Purebred")$lifespan),
                      summary(filter(df, insured=="Uninsured")$lifespan), 
                      summary(filter(df, insured=="Insured")$lifespan))
-rownames(lifespan_by) <- c("Male", "Female", "Neutered", "Entire", "Crossbred", "Purebred", "Uninsured", "Insured")
+rownames(lifespan_by) <- c("Population", "Male", "Female", "Neutered", "Entire", "Crossbred", "Purebred", "Uninsured", "Insured")
 lifespan_by
 
 #skewness(filter(df, sex=="Male")$lifespan)
@@ -56,3 +73,12 @@ wilcox.test(filter(df, pure_cross=="Crossbred")$lifespan, filter(df, pure_cross=
 wilcox.test(filter(df, insured=="Uninsured")$lifespan, filter(df, insured=="Insured")$lifespan)
 
 # 2. Survival Analysis
+# Use KM and Cox regression to analyse the mortality and survival of dogs.
+# Study the differences in dog mortality by 
+# 1. age
+# 2. sex
+# 3. breed
+# 4. neutering status
+# 5. insured status
+
+
